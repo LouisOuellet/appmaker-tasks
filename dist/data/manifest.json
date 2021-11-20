@@ -1,0 +1,19 @@
+{
+    "build": 1,
+    "version": "21.11-dev",
+    "name": "tasks",
+    "repository": {
+        "name": "appmaker-tasks",
+        "branch": "dev",
+        "host": {
+            "git": "https:\/\/github.com\/LouisOuellet\/",
+            "raw": "https:\/\/raw.githubusercontent.com\/LouisOuellet\/"
+        },
+        "manifest": "\/dist\/data\/manifest.json",
+        "branches": [
+            "main",
+            "beta",
+            "dev"
+        ]
+    }
+}
