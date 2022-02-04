@@ -1,21 +1,21 @@
-API.Plugins.tasks = {
+Engine.Plugins.tasks = {
 	init:function(){
 		var checkExist = setInterval(function() {
-			if((API.initiated)&&(typeof API.GUI.Navbar.element.left !== "undefined")&&(typeof API.GUI.Navbar.element.right !== "undefined")){
+			if((Engine.initiated)&&(typeof Engine.GUI.Navbar.element.left !== "undefined")&&(typeof Engine.GUI.Navbar.element.right !== "undefined")){
 				clearInterval(checkExist);
 				var html = '';
 				html += '<li class="nav-item dropdown">';
 					html += '<a class="nav-link" data-toggle="dropdown" data-display="static">';
 						html += '<i class="fas fa-tasks"></i>';
-						html += '<span class="badge badge-primary navbar-badge">'+API.Plugins.tasks.GUI.count+'</span>';
+						html += '<span class="badge badge-primary navbar-badge">'+Engine.Plugins.tasks.GUI.count+'</span>';
 					html += '</a>';
 					html += '<div class="dropdown-menu dropdown-menu-mobile dropdown-menu-task scrollable-menu">';
-						html += '<span class="dropdown-item dropdown-header">'+API.Plugins.tasks.GUI.count+' '+API.Contents.Language['Tasks']+'</span>';
+						html += '<span class="dropdown-item dropdown-header">'+Engine.Plugins.tasks.GUI.count+' '+Engine.Contents.Language['Tasks']+'</span>';
 					html += '</div>';
 				html += '</li>';
-				API.GUI.Navbar.element.right.prepend(html);
-				API.Plugins.tasks.GUI.element.list = API.GUI.Navbar.element.right.find('.dropdown-menu').first();
-				API.Plugins.tasks.GUI.element.badge = API.GUI.Navbar.element.right.find('.badge').first();
+				Engine.GUI.Navbar.element.right.prepend(html);
+				Engine.Plugins.tasks.GUI.element.list = Engine.GUI.Navbar.element.right.find('.dropdown-menu').first();
+				Engine.Plugins.tasks.GUI.element.badge = Engine.GUI.Navbar.element.right.find('.badge').first();
 			}
 		}, 100);
 	},
@@ -29,13 +29,13 @@ API.Plugins.tasks = {
 			if(options instanceof Function){ callback = options; options = {}; }
 			var url = new URL(window.location.href);
 			var checkExist = setInterval(function() {
-				if((API.initiated)&&(typeof API.Plugins.tasks.GUI.element.list !== "undefined")&&(typeof API.Plugins.tasks.GUI.element.badge !== "undefined")){
+				if((Engine.initiated)&&(typeof Engine.Plugins.tasks.GUI.element.list !== "undefined")&&(typeof Engine.Plugins.tasks.GUI.element.badge !== "undefined")){
 					clearInterval(checkExist);
 					var html = '';
-					++API.Plugins.tasks.GUI.count;
-					options.id = API.Plugins.tasks.GUI.count;
+					++Engine.Plugins.tasks.GUI.count;
+					options.id = Engine.Plugins.tasks.GUI.count;
 					if(typeof options.title === 'undefined'){ options.title = 'Task '+options.id; }
-					if(typeof options.created === 'undefined'){ options.created = API.Helper.now('ISO_8601'); }
+					if(typeof options.created === 'undefined'){ options.created = Engine.Helper.now('ISO_8601'); }
 					if(typeof options.plugin === 'undefined'){
 						if(typeof url.searchParams.get("p") !== 'undefined'){ options.plugin = url.searchParams.get("p"); } else { options.plugin = options.title; }
 					}
@@ -44,7 +44,7 @@ API.Plugins.tasks = {
 							options.icon = 'icon icon-'+options.icon;
 						}
 					}
-					if(typeof options.extra === 'undefined'){ options.extra = API.Helper.ucfirst(options.plugin); }
+					if(typeof options.extra === 'undefined'){ options.extra = Engine.Helper.ucfirst(options.plugin); }
 					if(typeof options.value === 'undefined'){ options.value = 0; }
 					if(typeof options.max === 'undefined'){ options.max = 1; }
 					var value = ((options.value / options.max) * 100);
@@ -53,8 +53,8 @@ API.Plugins.tasks = {
 					else if (50 <= value &&  value < 75){ var bg = 'info'; }
 					else if (75 <= value &&  value < 100){ var bg = 'primary'; }
 					else if (100 == value){ var bg = 'success'; }
-					API.Plugins.tasks.GUI.element.badge.html(options.id);
-					API.Plugins.tasks.GUI.element.list.find('.dropdown-header').first().remove();
+					Engine.Plugins.tasks.GUI.element.badge.html(options.id);
+					Engine.Plugins.tasks.GUI.element.list.find('.dropdown-header').first().remove();
 					html += '<div data-task="'+options.id+'" class="dropdown-divider"></div>';
 					html += '<a data-task="'+options.id+'" class="dropdown-item">';
 						html += '<div class="row"><div class="col-md-12">'+options.title+'</div></div>';
@@ -69,15 +69,15 @@ API.Plugins.tasks = {
 							html += '</div>';
 						html += '</div>';
 					html += '</a>';
-					API.Plugins.tasks.GUI.element.list.prepend(html);
-					API.Plugins.tasks.GUI.element.list.prepend('<span class="dropdown-item dropdown-header">'+options.id+' '+API.Contents.Language['Tasks']+'</span>');
+					Engine.Plugins.tasks.GUI.element.list.prepend(html);
+					Engine.Plugins.tasks.GUI.element.list.prepend('<span class="dropdown-item dropdown-header">'+options.id+' '+Engine.Contents.Language['Tasks']+'</span>');
 					$('[data-task="'+options.id+'"]').last().find('time').timeago();
 					if(callback != undefined){ callback(options, $('[data-task="'+options.id+'"]').last(), $('[data-task="'+options.id+'"]').first()); }
 				}
 			}, 100);
 		},
 		update:function(id, value, options = null){
-			var task = API.Plugins.tasks.GUI.element.list.find('[data-task="'+id+'"]').last();
+			var task = Engine.Plugins.tasks.GUI.element.list.find('[data-task="'+id+'"]').last();
 			var progress = task.find('.progress-bar');
 			var width = (value / progress.attr('aria-valuemax') * 100)
 			progress.attr('aria-valuenow', value);
@@ -94,17 +94,17 @@ API.Plugins.tasks = {
 			else if (100 == width){ var bg = 'success'; }
 			progress.addClass('bg-'+bg);
 			if(value == progress.attr('aria-valuemax')){
-				setTimeout(function() { API.Plugins.tasks.GUI.remove(id); }, 5000);
+				setTimeout(function() { Engine.Plugins.tasks.GUI.remove(id); }, 5000);
 			}
 		},
 		remove:function(id){
-			--API.Plugins.tasks.GUI.count;
-			API.Plugins.tasks.GUI.element.list.find('[data-task="'+id+'"]').remove();
-			API.Plugins.tasks.GUI.element.list.find('.dropdown-header').first().remove();
-			API.Plugins.tasks.GUI.element.list.prepend('<span class="dropdown-item dropdown-header">'+API.Plugins.tasks.GUI.count+' '+API.Contents.Language['Tasks']+'</span>');
-			API.Plugins.tasks.GUI.element.badge.html(API.Plugins.tasks.GUI.count);
+			--Engine.Plugins.tasks.GUI.count;
+			Engine.Plugins.tasks.GUI.element.list.find('[data-task="'+id+'"]').remove();
+			Engine.Plugins.tasks.GUI.element.list.find('.dropdown-header').first().remove();
+			Engine.Plugins.tasks.GUI.element.list.prepend('<span class="dropdown-item dropdown-header">'+Engine.Plugins.tasks.GUI.count+' '+Engine.Contents.Language['Tasks']+'</span>');
+			Engine.Plugins.tasks.GUI.element.badge.html(Engine.Plugins.tasks.GUI.count);
 		},
 	},
 }
 
-API.Plugins.tasks.init();
+Engine.Plugins.tasks.init();
