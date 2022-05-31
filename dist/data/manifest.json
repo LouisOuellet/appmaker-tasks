@@ -1,6 +1,6 @@
 {
-    "build": 10,
-    "version": "22.02-dev",
+    "build": 11,
+    "version": "22.05-dev",
     "name": "tasks",
     "repository": {
         "name": "appmaker-tasks",
