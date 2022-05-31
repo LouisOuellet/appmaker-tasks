@@ -1,10 +1,10 @@
 {
-    "build": 12,
-    "version": "22.05-pre-release",
+    "build": 13,
+    "version": "22.05-dev",
     "name": "tasks",
     "repository": {
         "name": "appmaker-tasks",
-        "branch": "pre-release",
+        "branch": "dev",
         "host": {
             "git": "https:\/\/github.com\/LouisOuellet\/",
             "raw": "https:\/\/raw.githubusercontent.com\/LouisOuellet\/"
